@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ballsguesser</title>
+  <style>
+    body {
+      background-color: #111;
+      color: #f5f5f5;
+      font-family: 'Courier New', Courier, monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.8em;
+      margin-bottom: 30px;
+      color: #ff4d4d;
+    }
+
+    select, button {
+      font-size: 1.1em;
+      background-color: #222;
+      color: #f5f5f5;
+      border: 2px solid #ff4d4d;
+      border-radius: 6px;
+      padding: 10px 20px;
+      margin: 10px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #ff4d4d;
+      color: #111;
+    }
+
+    #result {
+      margin-top: 30px;
+      font-size: 1.6em;
+      color: #00ffd5;
+    }
+
+    footer {
+      position: absolute;
+      bottom: 10px;
+      font-size: 0.75em;
+      color: #555;
+    }
+
+    /* Modal styles */
+    #modal {
+      display: none;
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.85);
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    #modal.show {
+      display: flex;
+    }
+
+    .loader {
+      border: 6px solid #333;
+      border-top: 6px solid #ff4d4d;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+      margin: 20px 0;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    #modal-text {
+      font-size: 1.2em;
+      color: #f5f5f5;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎯 Ballsguesser</h1>
+
+  <label for="gender">Choose your destiny:</label>
+  <select id="gender">
+    <option value="">-- pick wisely --</option>
+    <option value="male">Male</option>
+    <option value="female">Female</option>
+  </select>
+
+  <button onclick="guessBalls()">Guess My Balls</button>
+
+  <div id="result"></div>
+
+  <footer>
+    Precision guesses, zero science.
+  </footer>
+
+  <!-- Modal -->
+  <div id="modal">
+    <div class="loader"></div>
+    <div id="modal-text">Analyzing ball energy...</div>
+  </div>
+
+  <script>
+    function guessBalls() {
+      const gender = document.getElementById('gender').value;
+      const result = document.getElementById('result');
+      const modal = document.getElementById('modal');
+
+      if (!gender) {
+        result.textContent = "Pick a gender first, champ.";
+        return;
+      }
+
+      result.innerHTML = ''; // Clear old result
+      modal.classList.add('show');
+
+      // Fake loading for 5 seconds
+      setTimeout(() => {
+        modal.classList.remove('show');
+
+        const ballCount = gender === 'male' ? 2 : 0;
+
+        const ballMessages = {
+          0: [
+            "Ball-free and living your best life!",
+            "Zero balls detected. Absolutely ballless.",
+            "Ball count: none. Ball vibes: immaculate.",
+            "No balls, no baggage. Iconic.",
+            "The void where balls could be is powerful."
+          ],
+          2: [
+            "Classic dual ball configuration.",
+            "The standard issue pair. Nice.",
+            "Double trouble ball arrangement detected.",
+            "You've got the factory default: two balls.",
+            "Ball system online. Full capacity achieved."
+          ]
+        };
+
+        const flavorPool = ballMessages[ballCount];
+        const flavorText = flavorPool[Math.floor(Math.random() * flavorPool.length)];
+
+        result.innerHTML = `💡 You have: <strong>${ballCount} ball${ballCount === 1 ? '' : 's'}</strong><br><em>${flavorText}</em>`;
+      }, 5000);
+    }
+  </script>
+</body>
+</html>
